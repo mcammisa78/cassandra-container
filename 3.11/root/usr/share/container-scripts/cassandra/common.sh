@@ -96,7 +96,11 @@ function wait_for_cql_listener_up() {
 # create an 'admin' user with password set by CASSANDRA_ADMIN_PASSWORD environmnet variable
 function create_admin_user() {
   # change the config
-  sed -ri 's/(^authenticator:).*/\1 PasswordAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  if [ "$CASSANDRA_AUTHENTICATOR" == "password" ]; then
+     sed -ri 's/(^authenticator:).*/\1 PasswordAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  elif
+     sed -ri 's/(^authenticator:).*/\1 AllowAllAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  fi
 #  echo config changed
 
   # start cassandra with authentication
@@ -143,13 +147,21 @@ function create_admin_user() {
 # turn on the authorization
 function turn_authorization_on() {
   # change the config
-  sed -ri 's/(^authorizer:).*/\1 CassandraAuthorizer/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  if [ "$CASSANDRA_AUTHORIZER" == "cassandra" ]; then
+     sed -ri 's/(^authorizer:).*/\1 CassandraAuthorizer/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  elif
+     sed -ri 's/(^authorizer:).*/\1 AllowAllAuthorizer/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"     
+  fi
 #  echo config changed
 }
 
 # set authenticator to PasswordAuthenticator
 function set_password_authenticator {
-  sed -ri 's/(^authenticator:).*/\1 PasswordAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  if [ "$CASSANDRA_AUTHENTICATOR" == "password" ]; then
+     sed -ri 's/(^authenticator:).*/\1 PasswordAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  elif
+     sed -ri 's/(^authenticator:).*/\1 AllowAllAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
+  fi
 }
 
 # check if authorization is on
