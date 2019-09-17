@@ -98,7 +98,7 @@ function create_admin_user() {
   # change the config
   if [ "$CASSANDRA_AUTHENTICATOR" == "password" ]; then
      sed -ri 's/(^authenticator:).*/\1 PasswordAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
-  elif
+  else
      sed -ri 's/(^authenticator:).*/\1 AllowAllAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
   fi
 #  echo config changed
@@ -149,7 +149,7 @@ function turn_authorization_on() {
   # change the config
   if [ "$CASSANDRA_AUTHORIZER" == "cassandra" ]; then
      sed -ri 's/(^authorizer:).*/\1 CassandraAuthorizer/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
-  elif
+  else
      sed -ri 's/(^authorizer:).*/\1 AllowAllAuthorizer/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"     
   fi
 #  echo config changed
@@ -159,7 +159,7 @@ function turn_authorization_on() {
 function set_password_authenticator {
   if [ "$CASSANDRA_AUTHENTICATOR" == "password" ]; then
      sed -ri 's/(^authenticator:).*/\1 PasswordAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
-  elif
+  else
      sed -ri 's/(^authenticator:).*/\1 AllowAllAuthenticator/' "$CASSANDRA_CONF_DIR$CASSANDRA_CONF_FILE"
   fi
 }
